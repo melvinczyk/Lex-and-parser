@@ -3,7 +3,7 @@
 This was a final project that I made for my formal languages class. I created a lexer and parser for a CFG that we were given. The program also supports language interpretation and you can write custom test by creating a `.while` file inside of the test folder and running `parse.py`.
 
 # CFG
-
+```
 P -> S ";" P | S
 S -> "proc" f "(" L ")" "{" P "}"
     | "if" C "{" P "}" "else" "{" P "}"
@@ -25,6 +25,7 @@ S -> "proc" f "(" L ")" "{" P "}"
     | n
  R -> C "," Q | C | Ɛ
  Q -> C "," Q | C
+ ```
 
  # Sample output
 
