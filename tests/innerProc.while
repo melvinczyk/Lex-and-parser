@@ -1,0 +1,12 @@
+proc outerProc(x) 
+{
+    x := x * 2
+    proc innerProc(y) 
+    {
+        y := x + 3
+    };
+    
+    innerProc(12)
+};
+
+print outerProc(10)
