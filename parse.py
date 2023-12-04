@@ -56,7 +56,7 @@ def parse(toks):
             else:
                 return ErrorMsg(f"Unexpected end of input. Expected '{s}'")
         else:
-            return ErrorMsg(f"Expected '{s}', but got {token}")
+            return ValueError(f"Expected '{s}', but got {token}")
         
 
     # Parsing begins
@@ -65,8 +65,7 @@ def parse(toks):
         s = parseS()
         while peek(0) == ";":
             expect(";")
-            if peek(0) != "}":
-                s = SeqStmt(s,parseS())
+            s = SeqStmt(s,parseS())
         return s
 
     def parseS():
@@ -77,13 +76,16 @@ def parse(toks):
                 expect(f)
             else:
                 raise ErrorMsg(f"Expected an identifier, but got {f}")
-            expect("(")
-            params = parseL()
-            expect(")")
-            expect("{")
-            inside = parseP()
-            expect("}")
-            return ProcStmt(Var(f), params, inside)
+            if peek(0) == "(":
+                expect("(")
+                params = parseL()
+                expect(")")
+                expect("{")
+                inside = parseP()
+                expect("}")
+                return ProcStmt(Var(f), params, inside)
+            else:
+                raise ValueError(f"Expected '(', but got {peek(0)}")
 
         elif peek(0) == "if":
             expect("if")
@@ -148,7 +150,6 @@ def parse(toks):
             expect("=")
             right = parseE()
             return Equal(left, right)
-
         return left
             
     def parseE():
@@ -156,17 +157,16 @@ def parse(toks):
         return parseM(term)
     
     def parseM(left):
-        while peek(0) == "+" or peek(0) == "-":
-            operator = peek(0)
+        if peek(0) in {"+", "-"}:
+            operator = expect(peek(0))
+            right = parseT()
             if operator == "+":
-                expect("+")
-                right = parseT()
                 left = Plus(left, right)
             else:
-                expect("-")
-                right = parseT()
-                left = Minus(left, right)
-        return left
+                left = Minus(left,right)
+            return parseM(left)
+        else:
+            return left
 
     def parseT():
         factor = parseF()

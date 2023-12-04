@@ -1,15 +1,2 @@
-
-proc fib(n)
-{
-    i := 1;
-    a := 1;
-    b := 0;
-    while n > i {
-      i := i + 1;
-      a := a + b;
-      b := a - b
-    };
-    a
-};
-
-print fib(12)
+print 1;
+print 2

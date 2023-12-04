@@ -1,0 +1,9 @@
+proc func(x,y)
+{
+  x := x * 2;
+  y := y / 3;
+  y := x - 2;
+  print x
+};
+
+func(12,2)
